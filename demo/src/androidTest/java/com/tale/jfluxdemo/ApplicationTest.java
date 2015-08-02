@@ -1,4 +1,4 @@
-package com.tale.jflux;
+package com.tale.jfluxdemo;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -7,9 +7,11 @@ import java.lang.ref.WeakReference;
  */
 public abstract class Store {
 
+    public static final int STATE_STARTED = 0;
+
     private WeakReference<ReactView> reactViewWeakReference;
 
-    private int state;
+    private int state = STATE_STARTED;
 
     /**
      * Get current state of Store.
@@ -32,6 +34,13 @@ public abstract class Store {
         }
         this.state = state;
         notifyChange();
+    }
+
+    /**
+     * Reset state to STATE_STARTED.
+     */
+    protected void resetState() {
+        setState(STATE_STARTED);
     }
 
     public abstract void onReceiveAction(Action action);

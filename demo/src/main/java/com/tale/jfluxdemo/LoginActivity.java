@@ -104,13 +104,20 @@ public class LoginActivity extends Activity implements
 
     @Override
     public void onStoreChanged() {
-        showProgress(false);
 
-        if (loginStore.success) {
-            finish();
-        } else {
-            mPasswordView.setError(loginStore.errorMessage);
-            mPasswordView.requestFocus();
+        switch (loginStore.getState()) {
+            case LoginStore.STATE_PROCESSING:
+                showProgress(true);
+                break;
+            case LoginStore.STATE_SIGN_SUCCESSFUL:
+                showProgress(false);
+                finish();
+                break;
+            case LoginStore.STATE_WRONG_USERNAME_PASSWORD:
+                showProgress(false);
+                mPasswordView.setError(loginStore.errorMessage);
+                mPasswordView.requestFocus();
+                break;
         }
     }
 
@@ -157,7 +164,6 @@ public class LoginActivity extends Activity implements
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
             dispatcher.dispatch(new LoginAction(email, password));
         }
     }

@@ -16,6 +16,9 @@ import com.tale.jfluxdemo.action.LoginAction;
  */
 public class LoginStore extends Store {
 
+    public static final int STATE_PROCESSING              = 1;
+    public static final int STATE_WRONG_USERNAME_PASSWORD = 2;
+    public static final int STATE_SIGN_SUCCESSFUL         = 3;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -46,6 +49,7 @@ public class LoginStore extends Store {
     }
 
     private void attemptLogin(String email, String password) {
+        setState(STATE_PROCESSING);
         authTask = Async.<Boolean, String>newInstance(new Task() {
             @Override
             public Result call(Object... objects) {
@@ -79,7 +83,11 @@ public class LoginStore extends Store {
 
             @Override
             public void onCompleted() {
-                notifyChange();
+                if (success) {
+                    setState(STATE_SIGN_SUCCESSFUL);
+                } else {
+                    setState(STATE_WRONG_USERNAME_PASSWORD);
+                }
             }
         }).executeOnThreadPool(email, password);
     }

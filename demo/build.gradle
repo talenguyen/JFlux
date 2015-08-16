@@ -23,6 +23,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:7.5.0'
-    compile 'com.github.talenguyen:Async:f38b1cff94'
+    compile 'com.github.talenguyen:Async:647a601906'
+//    compile 'com.github.talenguyen:JFlux:f00d34840d'
     compile project(':library')
 }

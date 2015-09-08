@@ -22,21 +22,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.tale.jflux.Dispatcher;
-import com.tale.jflux.ReactView;
+import com.tale.jflux.OnStoreChangeListener;
 import com.tale.jfluxdemo.action.Actions;
 import com.tale.jfluxdemo.action.LoginAction;
 import com.tale.jfluxdemo.store.LoginStore;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements
-        LoaderCallbacks<Cursor>, ReactView {
+public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>,
+    OnStoreChangeListener {
 
     Dispatcher dispatcher;
     LoginStore loginStore;

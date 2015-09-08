@@ -28,7 +28,7 @@ public class Dispatcher {
         }
 
         for (Store store : stores) {
-            store.onReceiveAction(action);
+            store.onReceivedAction(action);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.tale.jflux;
 
-import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author tale. Created on 7/31/15.
@@ -9,7 +10,7 @@ public abstract class Store {
 
     public static final int STATE_STARTED = 0;
 
-    private WeakReference<ReactView> reactViewWeakReference;
+    private List<OnStoreChangeListener> listeners;
 
     private int state = STATE_STARTED;
 
@@ -23,7 +24,7 @@ public abstract class Store {
     }
 
     /**
-     * Change current state of Store. This will involve notifyChange method to notify for Views
+     * Change current state of Store. This will involve emitChange method to notify for Views
      * which is observing for state of this Store.
      *
      * @param state The new state.
@@ -33,7 +34,7 @@ public abstract class Store {
             return;
         }
         this.state = state;
-        notifyChange();
+        emitChange();
     }
 
     /**
@@ -43,36 +44,43 @@ public abstract class Store {
         setState(STATE_STARTED);
     }
 
-    public abstract void onReceiveAction(Action action);
+    public abstract void onReceivedAction(Action action);
 
     /**
-     * Should be called by {@link ReactView} to register for observer changes
-     * from this {@link Store}.
+     * Call to register for change event which emitted by this {@link Store}.
      *
-     * @param reactView The {@link ReactView}.
+     * @param listener The {@link OnStoreChangeListener}.
      */
-    public void bindView(ReactView reactView) {
-        reactViewWeakReference = new WeakReference<>(reactView);
+    public void registerForChangeEvent(OnStoreChangeListener listener) {
+        if (listener == null) {
+            return;
+        }
+        if (listeners == null) {
+            listeners = new ArrayList<>();
+        }
+        listeners.add(listener);
     }
 
     /**
-     * Should be call by {@link ReactView} to unregister for changes. Best
-     * practice is called whenever {@link ReactView} not visible. For
+     * Call to unregister for change event. Best practice is called whenever {@link OnStoreChangeListener} not visible. For
      * <b>Android</b> it is onPause().
      */
-    public void unBindView() {
-        reactViewWeakReference.clear();
+    public void unregisterForChangeEvent(OnStoreChangeListener listener) {
+        if (listener == null || listeners == null || listeners.size() == 0) {
+            return;
+        }
+        listeners.remove(listener);
     }
 
     /**
-     * Notify for {@link ReactView} there is change happened.
+     * Notify for {@link OnStoreChangeListener} there is change happened.
      */
-    private void notifyChange() {
-        if (reactViewWeakReference != null) {
-            final ReactView reactView = reactViewWeakReference.get();
-            if (reactView != null) {
-                reactView.onStoreChanged();
-            }
+    protected void emitChange() {
+        if (listeners == null || listeners.size() == 0) {
+            return;
+        }
+        for (OnStoreChangeListener listener : listeners) {
+            listener.onStoreChanged();
         }
     }
 }

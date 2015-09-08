@@ -10,8 +10,7 @@ import org.mockito.MockitoAnnotations;
  */
 public class StoreTest {
 
-    @Mock
-    ReactView reactView;
+    @Mock OnStoreChangeListener onStoreChangeListener;
     Action sampleAction;
     Store store;
 
@@ -21,9 +20,8 @@ public class StoreTest {
         MockitoAnnotations.initMocks(this);
 
         store = new Store() {
-            @Override
-            public void onReceiveAction(Action action) {
-                notifyChange();
+            @Override public void onReceivedAction(Action action) {
+                emitChange();
             }
         };
 
@@ -37,20 +35,20 @@ public class StoreTest {
 
     @org.junit.Test
     public void testBindView() throws Exception {
-        store.bindView(reactView);
-        store.onReceiveAction(sampleAction);
-        Mockito.verify(reactView).onStoreChanged();
+        store.registerForChangeEvent(onStoreChangeListener);
+        store.onReceivedAction(sampleAction);
+        Mockito.verify(onStoreChangeListener).onStoreChanged();
     }
 
     @org.junit.Test
     public void testUnBindView() throws Exception {
         // Bind view.
-        store.bindView(reactView);
+        store.registerForChangeEvent(onStoreChangeListener);
         // Then unbind view.
-        store.unBindView();
-        store.onReceiveAction(sampleAction);
+        store.unregisterForChangeEvent(onStoreChangeListener);
+        store.onReceivedAction(sampleAction);
         // Expect onStoreChanged not be call.
-        Mockito.verify(reactView, Mockito.never()).onStoreChanged();
+        Mockito.verify(onStoreChangeListener, Mockito.never()).onStoreChanged();
     }
 
 }

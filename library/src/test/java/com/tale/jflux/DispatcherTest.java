@@ -43,8 +43,8 @@ public class DispatcherTest {
         dispatcher.registerCallbackForAction(store1, 1);
         dispatcher.registerCallbackForAction(store2, 1);
         dispatcher.dispatch(action1);
-        Mockito.verify(store1).onReceiveAction(action1);
-        Mockito.verify(store2).onReceiveAction(action1);
+        Mockito.verify(store1).onReceivedAction(action1);
+        Mockito.verify(store2).onReceivedAction(action1);
 
     }
 
@@ -53,12 +53,11 @@ public class DispatcherTest {
         dispatcher.registerCallbackForAction(store1, 1);
         dispatcher.registerCallbackForAction(store2, 2);
         dispatcher.dispatch(action1);
-        Mockito.verify(store1).onReceiveAction(action1);
-        Mockito.verify(store2, Mockito.never()).onReceiveAction(Mockito.any
-                (Action.class));
+        Mockito.verify(store1).onReceivedAction(action1);
+        Mockito.verify(store2, Mockito.never()).onReceivedAction(Mockito.any(Action.class));
         dispatcher.dispatch(action2);
-        Mockito.verify(store2).onReceiveAction(action2);
-        Mockito.verify(store1, Mockito.never()).onReceiveAction(action2);
+        Mockito.verify(store2).onReceivedAction(action2);
+        Mockito.verify(store1, Mockito.never()).onReceivedAction(action2);
 
     }
 

@@ -1,20 +1,19 @@
 /**
- * JFlux
+ * UmbalaApp
  *
- * Created by Giang Nguyen on 10/3/15.
+ * Created by Giang Nguyen on 9/8/15.
  * Copyright (c) 2015 Umbala. All rights reserved.
  */
 
-package com.tale.androidflux.activity;
+package com.tale.androidflux.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.DialogFragment;
 import com.tale.androidflux.Lifecycle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseDialogFragment extends DialogFragment {
 
   private List<Lifecycle> lifecycles;
 
@@ -32,11 +31,11 @@ public class BaseActivity extends AppCompatActivity {
     }
   }
 
-  @Override protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-    super.onRestoreInstanceState(savedInstanceState);
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
     if (lifecycles != null && lifecycles.size() > 0) {
-      for (Lifecycle lifecycle : lifecycles) {
-        lifecycle.onRestoreInstanceState(savedInstanceState);
+      for (Lifecycle lifeCycle : lifecycles) {
+        lifeCycle.onRestoreInstanceState(savedInstanceState);
       }
     }
   }
@@ -44,36 +43,36 @@ public class BaseActivity extends AppCompatActivity {
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     if (lifecycles != null && lifecycles.size() > 0) {
-      for (Lifecycle lifecycle : lifecycles) {
-        lifecycle.onSaveInstanceState(outState);
+      for (Lifecycle lifeCycle : lifecycles) {
+        lifeCycle.onSaveInstanceState(outState);
       }
     }
   }
 
-  @Override protected void onResume() {
+  @Override public void onResume() {
     super.onResume();
     if (lifecycles != null && lifecycles.size() > 0) {
-      for (Lifecycle lifecycle : lifecycles) {
-        lifecycle.onResume();
+      for (Lifecycle lifeCycle : lifecycles) {
+        lifeCycle.onResume();
       }
     }
   }
 
-  @Override protected void onPause() {
+  @Override public void onPause() {
     if (lifecycles != null && lifecycles.size() > 0) {
-      for (Lifecycle lifecycle : lifecycles) {
-        lifecycle.onPause();
+      for (Lifecycle lifeCycle : lifecycles) {
+        lifeCycle.onPause();
       }
     }
     super.onPause();
   }
 
-  @Override protected void onDestroy() {
+  @Override public void onDestroyView() {
     if (lifecycles != null && lifecycles.size() > 0) {
-      for (Lifecycle lifecycle : lifecycles) {
-        lifecycle.onDestroyView();
+      for (Lifecycle lifeCycle : lifecycles) {
+        lifeCycle.onDestroyView();
       }
     }
-    super.onDestroy();
+    super.onDestroyView();
   }
 }

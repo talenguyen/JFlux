@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_height="@dimen/nine_offset"
+    >
+
+  <TextView
+      android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+      android:id="@+id/tvTask"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/nine_offset"
+      android:layout_marginStart="@dimen/nine_offset"
+      android:maxLines="2"
+      android:layout_marginEnd="@dimen/nine_offset"
+      android:layout_marginRight="@dimen/nine_offset"
+      tools:text="Something that I want to do"
+      />
+</LinearLayout>

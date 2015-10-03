@@ -7,7 +7,7 @@
 
 package com.tale.jfluxdemo.model;
 
-public class ToDo {
+public class Todo {
   public long id;
   public String task;
   public boolean isCompleted;

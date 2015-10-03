@@ -15,10 +15,8 @@ public class DispatcherTest {
     Action action1;
     Action action2;
 
-    @Mock
-    Store store1;
-    @Mock
-    Store store2;
+    @Mock FluxStore fluxStore1;
+    @Mock FluxStore fluxStore2;
 
     @Before
     public void setUp() throws Exception {
@@ -40,25 +38,27 @@ public class DispatcherTest {
 
     @Test
     public void testDispatchMany() throws Exception {
-        dispatcher.registerCallbackForAction(store1, 1);
-        dispatcher.registerCallbackForAction(store2, 1);
+        final Callback callback1 = Mockito.mock(Callback.class);
+        final Callback callback2 = Mockito.mock(Callback.class);
+        dispatcher.register(callback1);
+        dispatcher.register(callback2);
         dispatcher.dispatch(action1);
-        Mockito.verify(store1).onReceivedAction(action1);
-        Mockito.verify(store2).onReceivedAction(action1);
+        Mockito.verify(callback1, Mockito.times(1)).call(action1);
+        Mockito.verify(callback2, Mockito.times(1)).call(action1);
 
     }
-
-    @Test
-    public void testDispatchOne() throws Exception {
-        dispatcher.registerCallbackForAction(store1, 1);
-        dispatcher.registerCallbackForAction(store2, 2);
-        dispatcher.dispatch(action1);
-        Mockito.verify(store1).onReceivedAction(action1);
-        Mockito.verify(store2, Mockito.never()).onReceivedAction(Mockito.any(Action.class));
-        dispatcher.dispatch(action2);
-        Mockito.verify(store2).onReceivedAction(action2);
-        Mockito.verify(store1, Mockito.never()).onReceivedAction(action2);
-
-    }
+    //
+    //@Test
+    //public void testDispatchOne() throws Exception {
+    //    dispatcher.registerCallbackForAction(fluxStore1, 1);
+    //    dispatcher.registerCallbackForAction(fluxStore2, 2);
+    //    dispatcher.dispatch(action1);
+    //    Mockito.verify(fluxStore1).onReceivedAction(action1);
+    //    Mockito.verify(fluxStore2, Mockito.never()).onReceivedAction(Mockito.any(Action.class));
+    //    dispatcher.dispatch(action2);
+    //    Mockito.verify(fluxStore2).onReceivedAction(action2);
+    //    Mockito.verify(fluxStore1, Mockito.never()).onReceivedAction(action2);
+    //
+    //}
 
 }

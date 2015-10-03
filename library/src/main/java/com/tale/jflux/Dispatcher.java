@@ -155,12 +155,12 @@ public class Dispatcher {
   }
 
   /**
-   * Dispatches a payload to all registered callbacks.
+   * Dispatches a action to all registered callbacks.
    */
-  public void dispatch(Action payload) {
+  public void dispatch(Action action) {
     invariant(!this.isDispatching,
         "Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.");
-    this.startDispatching(payload);
+    this.startDispatching(action);
     try {
       for (String id : callbacks.keySet()) {
         if (isPending.get(id)) {

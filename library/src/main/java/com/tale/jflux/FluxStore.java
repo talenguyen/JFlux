@@ -66,11 +66,13 @@ public abstract class FluxStore implements Callback {
     dispatchToken = dispatcher.register(this);
   }
 
-  @Override public void call(Action payload) {
-    invokeOnDispatch(payload);
+  @Override public void call(Action action) {
+    invokeOnDispatch(action);
   }
 
   /**
+   * Add listener.
+   *
    * @param listener {@link OnChangeListener} callback
    */
   public void addListener(OnChangeListener listener) {
@@ -81,6 +83,18 @@ public abstract class FluxStore implements Callback {
       return;
     }
     listeners.add(listener);
+  }
+
+  /**
+   * Remove listener
+   *
+   * @param listener {@link OnChangeListener} callback
+   */
+  public void removeListener(OnChangeListener listener) {
+    if (listeners == null || listeners.size() == 0) {
+      return;
+    }
+    listeners.remove(listener);
   }
 
   /**
@@ -121,15 +135,15 @@ public abstract class FluxStore implements Callback {
   /**
    * This method encapsulates all logic for invoking __onDispatch. It should
    * be used for things like catching changes and emitting them after the
-   * subclass has handled a payload.
+   * subclass has handled a action.
    *
-   * @param payload {@link Action} payload The data dispatched by the dispatcher, describing
+   * @param action {@link Action} action The data dispatched by the dispatcher, describing
    * something that has happened in the real world: the user clicked, the
    * server responded, time passed, etc.
    */
-  protected void invokeOnDispatch(Action payload) {
+  protected void invokeOnDispatch(Action action) {
     this.changed = false;
-    this.onDispatch(payload);
+    this.onDispatch(action);
     if (this.changed) {
       notifyChanged();
     }
@@ -140,11 +154,11 @@ public abstract class FluxStore implements Callback {
    * instantiation. Subclasses must override this method. This callback is the
    * only way the store receives new data.
    *
-   * @param payload {@link Action} payload The data dispatched by the dispatcher, describing
+   * @param action {@link Action} action The data dispatched by the dispatcher, describing
    * something that has happened in the real world: the user clicked, the
    * server responded, time passed, etc.
    */
-  protected abstract void onDispatch(Action payload);
+  protected abstract void onDispatch(Action action);
 
   private void notifyChanged() {
     if (listeners != null && listeners.size() > 0) {
@@ -152,5 +166,9 @@ public abstract class FluxStore implements Callback {
         listener.onChanged();
       }
     }
+  }
+
+  public static interface OnChangeListener {
+    void onChanged();
   }
 }

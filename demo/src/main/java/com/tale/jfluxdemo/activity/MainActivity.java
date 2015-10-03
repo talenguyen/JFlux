@@ -13,9 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.tale.jfluxdemo.R;
+import com.tale.jfluxdemo.dialog.AddItemDialog;
 
 public class MainActivity extends AppCompatActivity {
+  private static final String ADD_ITEM_DIALOG = "AddItemDialog";
   @Bind(R.id.toolbarView) Toolbar toolbarView;
   @Bind(R.id.recyclerView) RecyclerView recyclerView;
 
@@ -25,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     setSupportActionBar(toolbarView);
+  }
 
-    if (savedInstanceState == null) {
-
-    }
+  @OnClick(R.id.addBT) public void showAddDialog() {
+    new AddItemDialog().show(getSupportFragmentManager(), ADD_ITEM_DIALOG);
   }
 }

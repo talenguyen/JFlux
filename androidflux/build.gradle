@@ -29,3 +29,10 @@ dependencies {
   compile 'com.android.support:appcompat-v7:23.0.1'
   compile project(':library')
 }
+
+task androidReleaseJar(type: Jar, dependsOn: assembleRelease) {
+  from "$buildDir/intermediates/classes/release/"
+  exclude '**/BuildConfig.class'
+  exclude '**/R.class'
+  exclude '**/R$*.class'
+}

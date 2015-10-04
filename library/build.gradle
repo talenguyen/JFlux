@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'com.github.dcendents.android-maven'
-
 group = 'com.github.talenguyen'
 
 sourceCompatibility = 1.7

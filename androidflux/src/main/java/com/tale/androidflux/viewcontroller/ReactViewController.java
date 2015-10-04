@@ -10,9 +10,10 @@ package com.tale.androidflux.viewcontroller;
 import android.os.Bundle;
 import com.tale.androidflux.Lifecycle;
 import com.tale.jflux.FluxStore;
+import com.tale.jflux.OnChangeListener;
 
 public abstract class ReactViewController<T extends FluxStore>
-    implements Lifecycle, FluxStore.OnChangeListener {
+    implements Lifecycle, OnChangeListener {
   private T fluxStore;
 
   public ReactViewController(T fluxStore) {

@@ -168,7 +168,4 @@ public abstract class FluxStore implements Callback {
     }
   }
 
-  public static interface OnChangeListener {
-    void onChanged();
-  }
 }

@@ -8,7 +8,6 @@
 package com.tale.androidflux.activity;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import com.tale.androidflux.Lifecycle;
 import java.util.ArrayList;
@@ -16,7 +15,16 @@ import java.util.List;
 
 public class BaseActivity extends AppCompatActivity {
 
+  /**
+   * These 3 fields below is use to determine if bind() method is call from onCreate() or not to
+   * call {@link Lifecycle#onViewCreated(Bundle)} method.
+   */
+  private static final int ON_CREATE = 1;
+  private static final int ON_RESUME = 2;
+  private int callbackState;
+
   private List<Lifecycle> lifecycles;
+  private Bundle savedInstanceState;
 
   /**
    * Bind lifecycle to this fragment. Should be called bin onCreateView() method.
@@ -30,15 +38,15 @@ public class BaseActivity extends AppCompatActivity {
     if (!lifecycles.contains(lifeCycle)) {
       lifecycles.add(lifeCycle);
     }
+    if (callbackState == ON_CREATE) {
+      lifeCycle.onViewCreated(savedInstanceState);
+    }
   }
 
-  @Override protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-    super.onRestoreInstanceState(savedInstanceState);
-    if (lifecycles != null && lifecycles.size() > 0) {
-      for (Lifecycle lifecycle : lifecycles) {
-        lifecycle.onRestoreInstanceState(savedInstanceState);
-      }
-    }
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    this.savedInstanceState = savedInstanceState;
+    callbackState = ON_CREATE;
   }
 
   @Override public void onSaveInstanceState(Bundle outState) {
@@ -52,6 +60,7 @@ public class BaseActivity extends AppCompatActivity {
 
   @Override protected void onResume() {
     super.onResume();
+    callbackState = ON_RESUME;
     if (lifecycles != null && lifecycles.size() > 0) {
       for (Lifecycle lifecycle : lifecycles) {
         lifecycle.onResume();
@@ -74,6 +83,8 @@ public class BaseActivity extends AppCompatActivity {
         lifecycle.onDestroyView();
       }
     }
+    lifecycles.clear();
+    lifecycles = null;
     super.onDestroy();
   }
 }

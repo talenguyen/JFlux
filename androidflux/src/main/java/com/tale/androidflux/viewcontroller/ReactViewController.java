@@ -24,7 +24,7 @@ public abstract class ReactViewController<T extends FluxStore>
 
   }
 
-  @Override public void onRestoreInstanceState(Bundle savedInstanceState) {
+  @Override public void onViewCreated(Bundle savedInstanceState) {
 
   }
 

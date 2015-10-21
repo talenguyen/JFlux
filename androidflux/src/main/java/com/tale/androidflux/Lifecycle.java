@@ -6,7 +6,7 @@ public interface Lifecycle {
 
   void onSaveInstanceState(Bundle outState);
 
-  void onRestoreInstanceState(Bundle savedInstanceState);
+  void onViewCreated(Bundle savedInstanceState);
 
   void onResume();
 

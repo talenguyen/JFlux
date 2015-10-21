@@ -35,7 +35,7 @@ public class BaseDialogFragment extends DialogFragment {
     super.onActivityCreated(savedInstanceState);
     if (lifecycles != null && lifecycles.size() > 0) {
       for (Lifecycle lifeCycle : lifecycles) {
-        lifeCycle.onRestoreInstanceState(savedInstanceState);
+        lifeCycle.onViewCreated(savedInstanceState);
       }
     }
   }
